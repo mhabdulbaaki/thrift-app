@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:thrift_app/res/string_values.dart';
+import 'package:thrift_app/ui/screens/location_search_delegate.dart';
 import 'package:thrift_app/utilities/decoration.dart';
+import 'package:thrift_app/utilities/determine_position.dart';
 import 'package:thrift_app/utilities/validator.dart';
 
 const String kGallery = 'Gallery';
 const String kCamera = 'Camera';
+const String kImagePlaceholder = 'Upload image';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -20,14 +23,14 @@ class _CreatePostState extends State<CreatePost> {
 
   final picker = ImagePicker();
 
-  final TextEditingController titleController = TextEditingController();
+  final titleController = TextEditingController();
 
-  final TextEditingController descriptionController = TextEditingController();
+  final descriptionController = TextEditingController();
 
-  final TextEditingController locationController = TextEditingController();
+  final locationController = TextEditingController();
   File imageFile;
-  var date;
-  var time;
+  DateTime date;
+  TimeOfDay time;
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +52,14 @@ class _CreatePostState extends State<CreatePost> {
                 TextFormField(
                   decoration: iDecoratorion(kDecoTitle),
                   controller: titleController,
-                  validator: (value) {
-                    return Validator.titleValidator(value);
-                  },
+                  validator: Validator.titleValidator,
                 ),
                 TextFormField(
                   decoration: iDecoratorion(kDecoDesc),
                   controller: descriptionController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  validator: (value) {
-                    return Validator.descriptionValidator(value);
-                  },
+                  validator: Validator.descriptionValidator,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -72,10 +71,13 @@ class _CreatePostState extends State<CreatePost> {
                     color: colorScheme.primary,
                     child: imageFile == null
                         ? Center(
-                            child: Text('Upload image'),
+                            child: Text(kImagePlaceholder),
                           )
                         : Image.file(imageFile),
                   ),
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,9 +96,13 @@ class _CreatePostState extends State<CreatePost> {
                           });
                         }
                       },
-                      child: Text(date == null
-                          ? kDate
-                          : DateFormat('MMMMEEEEd').format(date)),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: colorScheme.primary,
+                        child: Text(date == null
+                            ? kDate
+                            : DateFormat('MMMMEEEEd').format(date)),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -109,14 +115,43 @@ class _CreatePostState extends State<CreatePost> {
                           });
                         }
                       },
-                      child: Text(time == null ? kTime : time),
+                      child: Container(
+                          padding: EdgeInsets.all(8),
+                          color: colorScheme.primary,
+                          child: Text(
+                              time == null ? kTime : time.format(context))),
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      showSearch(
+                          context: context, delegate: LocationSearchDelegate());
+                      // final currentLocation = await determinePosition();
+                      // print(currentLocation);
+                    } catch (error) {
+                      appSnackBar(context, error);
+                    }
+                  },
+                  child: Container(
+                    height: 20,
+                    width: double.infinity,
+                    color: colorScheme.primary,
+                    child: Center(child: Text('set location')),
+                  ),
+                ),
                 ElevatedButton(
                     onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        print('form Valid');
+                      if (formKey.currentState.validate() &&
+                          time != null &&
+                          date != null) {
+                        ///ToDo: add post to firebase
+                      } else {
+                        appSnackBar(context, kInvalidFormMessage);
                       }
                     },
                     child: Text(kCreatePostButton)),
@@ -126,6 +161,11 @@ class _CreatePostState extends State<CreatePost> {
         ),
       ),
     );
+  }
+
+  void appSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   Future buildShowDialog(BuildContext context) => showDialog(
@@ -139,11 +179,13 @@ class _CreatePostState extends State<CreatePost> {
               TextButton(
                   onPressed: () async {
                     await pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
                   },
                   child: Text(kGallery)),
               TextButton(
                   onPressed: () async {
                     await pickImage(ImageSource.camera);
+                    Navigator.pop(context);
                   },
                   child: Text(kCamera)),
             ],
