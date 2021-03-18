@@ -6,3 +6,7 @@ const String kDate = 'Select Date';
 const String kTime = 'Select Time';
 const String kDialogTitle = 'Select Image source';
 const String kInvalidFormMessage = 'all fields must be filled';
+const String kLogin = 'Login';
+const String kEmail = 'email';
+const String kPassword = 'password';
+const String kSignUp = 'Sign Up';

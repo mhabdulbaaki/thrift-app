@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:thrift_app/res/numerical_vals.dart';
 import 'package:thrift_app/res/string_values.dart';
 import 'package:thrift_app/ui/screens/location_search_delegate.dart';
 import 'package:thrift_app/utilities/decoration.dart';
-import 'package:thrift_app/utilities/determine_position.dart';
 import 'package:thrift_app/utilities/validator.dart';
 
 const String kGallery = 'Gallery';
@@ -50,16 +50,22 @@ class _CreatePostState extends State<CreatePost> {
             child: Column(
               children: [
                 TextFormField(
-                  decoration: iDecoratorion(kDecoTitle),
+                  decoration: formDecoratorion(kDecoTitle),
                   controller: titleController,
                   validator: Validator.titleValidator,
                 ),
+                SizedBox(
+                  height: sizedBoxHeight,
+                ),
                 TextFormField(
-                  decoration: iDecoratorion(kDecoDesc),
+                  decoration: formDecoratorion(kDecoDesc),
                   controller: descriptionController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   validator: Validator.descriptionValidator,
+                ),
+                SizedBox(
+                  height: sizedBoxHeight,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -73,11 +79,15 @@ class _CreatePostState extends State<CreatePost> {
                         ? Center(
                             child: Text(kImagePlaceholder),
                           )
-                        : Image.file(imageFile),
+                        : Image.file(
+                            imageFile,
+                            // fit: BoxFit.fill,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: sizedBoxHeight,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,6 +153,9 @@ class _CreatePostState extends State<CreatePost> {
                     color: colorScheme.primary,
                     child: Center(child: Text('set location')),
                   ),
+                ),
+                SizedBox(
+                  height: sizedBoxHeight,
                 ),
                 ElevatedButton(
                     onPressed: () {
