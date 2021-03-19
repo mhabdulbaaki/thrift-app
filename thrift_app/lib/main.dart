@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thrift_app/ui/screens/create_post.dart';
-import 'package:thrift_app/ui/screens/login.dart';
+import 'package:thrift_app/ui/screens/settings.dart';
 import 'package:thrift_app/ui/screens/upcoming_events.dart';
 
 const String kAppTitle = 'Thrift Shop';
@@ -18,7 +17,7 @@ class ThriftApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: CreatePost(),
-      home: UpcomingEvents(),
+      home: Settings(),
     );
   }
 }

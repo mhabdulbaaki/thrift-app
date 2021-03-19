@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_place/google_place.dart';
-import 'package:thrift_app/res/apikey.dart';
 
 class LocationSearchDelegate extends SearchDelegate {
-  final googlePlace = GooglePlace(KEY);
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[

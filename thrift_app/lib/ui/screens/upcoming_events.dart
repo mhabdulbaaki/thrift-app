@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:thrift_app/res/numerical_vals.dart';
 import 'package:thrift_app/ui/components/event_card.dart';
 
-class UpcomingEvents extends StatelessWidget {
+class UpcomingEvents extends StatefulWidget {
+  @override
+  _UpcomingEventsState createState() => _UpcomingEventsState();
+}
+
+class _UpcomingEventsState extends State<UpcomingEvents> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        // currentIndex: ,
-        // onTap: ,
-
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.view_agenda), label: 'Events'),
