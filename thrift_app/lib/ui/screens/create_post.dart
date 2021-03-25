@@ -37,9 +37,6 @@ class _CreatePostState extends State<CreatePost> {
     final colorScheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(kCreatePostTitle),
-      ),
       body: Form(
         key: formKey,
         child: Padding(
@@ -167,7 +164,7 @@ class _CreatePostState extends State<CreatePost> {
                         appSnackBar(context, kInvalidFormMessage);
                       }
                     },
-                    child: Text(kCreatePostButton)),
+                    child: Text(kCreatePostButtonTitle)),
               ],
             ),
           ),

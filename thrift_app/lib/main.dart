@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:thrift_app/ui/screens/settings.dart';
-import 'package:thrift_app/ui/screens/upcoming_events.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thrift_app/ui/screens/home.dart';
+
+import 'cubit/screentab_cubit.dart';
 
 const String kAppTitle = 'Thrift Shop';
 const String kAppBarTitle = 'Upcoming Events';
@@ -11,13 +13,17 @@ void main() {
 class ThriftApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: kAppTitle,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ScreentabCubit>(create: (context) => ScreentabCubit()),
+      ],
+      child: MaterialApp(
+        title: kAppTitle,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Home(),
       ),
-      //home: CreatePost(),
-      home: Settings(),
     );
   }
 }
