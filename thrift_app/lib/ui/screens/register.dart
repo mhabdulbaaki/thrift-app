@@ -55,13 +55,13 @@ class _RegisterState extends State<Register> {
                     height: sizedBoxHeight,
                   ),
                   TextFormField(
-                    decoration: authDecoration(kEmail),
+                    decoration: iDecoration(kEmail),
                   ),
                   SizedBox(
                     height: sizedBoxHeight,
                   ),
                   TextFormField(
-                    decoration: authDecoration(kPassword),
+                    decoration: iDecoration(kPassword),
                   ),
                   SizedBox(
                     height: sizedBoxHeight,

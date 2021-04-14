@@ -1,24 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:thrift_app/res/numerical_vals.dart';
 import 'package:thrift_app/res/string_values.dart';
+import 'package:thrift_app/ui/screens/view_reminders.dart';
+import 'package:thrift_app/utilities/decoration.dart';
 
 class Settings extends StatelessWidget {
-  final List<String> _actions = [kReminders, kResetPassword, kLogout];
+  final buttonStyle = ButtonStyle(alignment: Alignment.centerLeft);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          TextFormField(),
-          Divider(
-            height: 3,
+          TextFormField(
+            decoration: iDecoration('change location', borderRadius: 40),
+          ),
+          SizedBox(
+            height: sizedBoxHeight,
           ),
           Expanded(
-            // flex: 3,
-            child: ListView.separated(
-                itemBuilder: (context, index) =>
-                    TextButton(onPressed: () {}, child: Text(_actions[index])),
-                separatorBuilder: (context, index) => Divider(),
-                itemCount: _actions.length),
+            child: ListView(
+              children: [
+                Divider(),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewReminders()));
+                    },
+                    child: Text(kReminders),
+                    style: buttonStyle),
+                Divider(),
+                TextButton(
+                    onPressed: () {},
+                    child: Text(kResetPassword),
+                    style: buttonStyle),
+                Divider(),
+                TextButton(
+                    onPressed: () {}, child: Text(kLogout), style: buttonStyle),
+                Divider(),
+              ],
+            ),
           )
         ],
       ),

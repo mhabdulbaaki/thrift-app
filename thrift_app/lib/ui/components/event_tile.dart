@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:thrift_app/ui/screens/create_post.dart';
-import 'package:thrift_app/ui/screens/created_posts.dart';
 
 class EventTile extends StatelessWidget {
-  const EventTile({
-    Key key,
-    @required this.width,
-  }) : super(key: key);
+  const EventTile(
+      {@required this.width,
+      @required this.buttonAction,
+      @required this.buttonTitle});
 
   final double width;
+  final String buttonTitle;
+  final Function buttonAction;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,8 @@ class EventTile extends StatelessWidget {
                     overflow: TextOverflow.fade,
                     //softWrap: true,
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text('Edit Post')),
+                  ElevatedButton(
+                      onPressed: buttonAction, child: Text(buttonTitle)),
                 ],
               ),
             ),

@@ -1,10 +1,15 @@
 def localProperties = new Properties()
+
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream()) 
+def apikey = localProperties.getProperty('API_KEY')
+
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
 }
+
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
@@ -40,6 +45,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders = [ API_KEY:apikey]
     }
 
     buildTypes {

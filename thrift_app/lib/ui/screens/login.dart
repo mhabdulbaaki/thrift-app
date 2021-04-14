@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:thrift_app/res/numerical_vals.dart';
 import 'package:thrift_app/res/string_values.dart';
-import 'package:thrift_app/ui/screens/register.dart';
 import 'package:thrift_app/utilities/decoration.dart';
 
 class Login extends StatefulWidget {
@@ -56,13 +55,13 @@ class _LoginState extends State<Login> {
                     height: sizedBoxHeight,
                   ),
                   TextFormField(
-                    decoration: authDecoration(kEmail),
+                    decoration: iDecoration(kEmail),
                   ),
                   SizedBox(
                     height: sizedBoxHeight,
                   ),
                   TextFormField(
-                    decoration: authDecoration(kPassword),
+                    decoration: iDecoration(kPassword),
                   ),
                   SizedBox(
                     height: sizedBoxHeight,
