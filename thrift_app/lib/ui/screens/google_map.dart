@@ -62,10 +62,19 @@ class _MyAppState extends State<MyApp> {
                 zoom: 14.0,
               ),
             ),
-            Positioned(
-                left: (size.width) / 2,
-                top: (size.height) / 2,
-                child: Icon(Icons.place))
+            Align(
+                alignment: Alignment.center,
+                child: Opacity(
+                    opacity: 0.4,
+                    child: Container(
+                      width: 150.0,
+                      height: 150.0,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage('assets/place_marker.png'),
+                        fit: BoxFit.contain,
+                      )),
+                    )))
           ],
         ),
       ),
