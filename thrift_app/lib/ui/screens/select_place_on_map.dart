@@ -1,55 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MyApp extends StatefulWidget {
+class SelectPlaceOnMap extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _SelectPlaceOnMapState createState() => _SelectPlaceOnMapState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _SelectPlaceOnMapState extends State<SelectPlaceOnMap> {
   GoogleMapController mapController;
-  //final LatLng _center = const LatLng(45.521563, -122.677433);
   static const LatLng _center =
       const LatLng(5.590862331813193, -0.15940897711195348);
-  final Set<Marker> markers = {
-    Marker(
-      markerId: MarkerId(_center.toString()),
-      position: _center,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    )
-  };
-  LatLng lastMapPosition = _center;
+
+  final Set<Marker> markers = {};
+  LatLng currentMapPosition = _center;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
   void onCameraMove(CameraPosition position) {
-    lastMapPosition = position.target;
+    currentMapPosition = position.target;
   }
 
   void onCameraIdle() {
     setState(() {
       markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(lastMapPosition.toString()),
-        position: lastMapPosition,
-        icon: BitmapDescriptor.defaultMarker,
-      ));
+          markerId: MarkerId(currentMapPosition.toString()),
+          position: currentMapPosition,
+          visible: false));
       print(
-          'lat: ${lastMapPosition.latitude}, lon: ${lastMapPosition.longitude}');
+          'lat: ${currentMapPosition.latitude}, lon: ${currentMapPosition.longitude}');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
-        ),
         body: Stack(
           children: [
             GoogleMap(

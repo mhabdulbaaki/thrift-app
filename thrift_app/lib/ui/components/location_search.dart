@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:google_place/google_place.dart';
 import 'package:thrift_app/utilities/place_data/place_detail.dart';
+import 'package:thrift_app/ui/screens/select_place_on_map.dart';
+
+const String kLabelText = "Search";
+const String kAPI_KEY = 'API_KEY';
 
 class LocationSearch extends StatefulWidget {
   @override
@@ -15,7 +19,7 @@ class _LocationSearchState extends State<LocationSearch> {
 
   @override
   void initState() {
-    String apiKey = DotEnv.env['API_KEY'];
+    String apiKey = DotEnv.env[kAPI_KEY];
     googlePlace = GooglePlace(apiKey);
     super.initState();
   }
@@ -31,7 +35,7 @@ class _LocationSearchState extends State<LocationSearch> {
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
-                  labelText: "Search",
+                  labelText: kLabelText,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.blue,
@@ -60,6 +64,19 @@ class _LocationSearchState extends State<LocationSearch> {
               SizedBox(
                 height: 10,
               ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectPlaceOnMap(),
+                      ),
+                    );
+                  },
+                  child: Text('📍 Choose on map 🗺')),
+              SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: predictions.length,
@@ -74,7 +91,7 @@ class _LocationSearchState extends State<LocationSearch> {
                       title: Text(predictions[index].description),
                       onTap: () async {
                         print("print: ${predictions[index].placeId}");
-                        await getDetails(predictions[index].placeId);
+                        await getDetails(placeId: predictions[index].placeId);
                       },
                     );
                   },
@@ -105,9 +122,10 @@ class _LocationSearchState extends State<LocationSearch> {
     }
   }
 
-  getDetails(String placeId) async {
+  Future<Map<String, double>> getDetails({@required String placeId}) async {
     final placeDetail = PlaceDetail(placeId: placeId);
     location = await placeDetail.getLocation();
     print(location.lat);
+    return {'lat': location.lat, 'lon': location.lng};
   }
 }

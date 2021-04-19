@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:thrift_app/utilities/get_user_current_position.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
@@ -31,20 +32,33 @@ class ErrorCheckCubit extends Cubit<ErrorCheckState> {
       print(e);
     }
 
-    // //check location permissions
-    // try {
-    //   positionStream =
-    //       Geolocator.getPositionStream().listen((Position position) {
-    //     print(position == null
-    //         ? 'Unknown'
-    //         : position.latitude.toString() +
-    //             ', ' +
-    //             position.longitude.toString());
-    //   });
-    // } on PlatformException catch (e) {
-    //   print('error message: $e');
-    //   print('hello world: hardi');
-    // }
+    //check location permissions
+    try {
+      positionStream =
+          Geolocator.getPositionStream().listen((Position position) {
+        print(position == null
+            ? 'Unknown'
+            : position.latitude.toString() +
+                ', ' +
+                position.longitude.toString());
+      });
+    } catch (e) {
+      print('error message: $e');
+    }
+  }
+
+  Future<Position> retrieveCurrentPosition() async {
+    try {
+      final Position currentPosition = await getUserCurrentPosition();
+
+      print(
+          'ur current position: lat ${currentPosition.latitude} lon ${currentPosition.longitude}');
+      emit(LocationEnabled(currentPosition: currentPosition));
+    } on Error catch (e) {
+      print('errorMessage: $e');
+      emit(LocationError(errorMessage: e.toString()));
+    }
+    return null;
   }
 
   @override

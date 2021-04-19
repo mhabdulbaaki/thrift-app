@@ -9,7 +9,10 @@ class InternetDisconnected extends ErrorCheckState {}
 
 class InternetConnected extends ErrorCheckState {}
 
-class LocationEnabled extends ErrorCheckState {}
+class LocationEnabled extends ErrorCheckState {
+  final Position currentPosition;
+  LocationEnabled({@required this.currentPosition});
+}
 
 class LocationError extends ErrorCheckState {
   final String errorMessage;

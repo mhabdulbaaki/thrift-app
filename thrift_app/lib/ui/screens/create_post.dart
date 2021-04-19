@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thrift_app/cubit/error_check_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -135,39 +136,24 @@ class _CreatePostState extends State<CreatePost> {
                     SizedBox(
                       height: 15,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LocationSearch()),
+                    BlocBuilder<ErrorCheckCubit, ErrorCheckState>(
+                      builder: (context, state) {
+                        //Todo: handle state
+                        return ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LocationSearch()),
+                            );
+                          },
+                          child: Text('Set Location'),
                         );
                       },
-                      child: Text('Set Location'),
                     ),
-                    // GestureDetector(
-                    //   onTap: () async {
-                    //     try {
-                    //       showSearch(
-                    //           context: context,
-                    //           delegate: LocationSearchDelegate());
-                    //       // final currentLocation = await determinePosition();
-                    //       // print(currentLocation);
-                    //     } catch (error) {
-                    //       appSnackBar(context, error);
-                    //     }
-                    //   },
-                    //   child: Container(
-                    //     height: 20,
-                    //     width: double.infinity,
-                    //     color: colorScheme.primary,
-                    //     child: Center(child: Text('set location')),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: sizedBoxHeight,
                     ),
-
                     ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState.validate() &&
